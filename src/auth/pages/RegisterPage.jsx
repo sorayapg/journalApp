@@ -10,14 +10,25 @@ const formData = {
     displayName:'Soraya Povedano'
 }
 
+const formValidations = {
+    email: [ (value) => value.includes('@'), 'El correo debe de tener una @'],
+    password: [ (value) => value.length >= 6, 'El password debe de tener más de 6 letras.'],
+    diplayName: [ (value) => value.length >= 1, 'El nombre es obligatorio.'],
+}
+
 export const RegisterPage = () => {
 
-    const { diplayName, email, password, onInputChange, formState } = useForm( formData );
+    const { 
+        formState, diplayName, email, password, onInputChange,
+        isFormValid,  diplayNameValid, emailValid, passwordValid,
+    } = useForm( formData, formValidations );
 
     const onSubmit = ( event ) => {
         event.preventDefault();
         console.log( formState );
     }
+
+    console.log(diplayNameValid);
     
     return (
         <AuthLayout title="Crear cuenta">
@@ -31,7 +42,9 @@ export const RegisterPage = () => {
                         fullWidth
                         name="displayName"
                         value={ diplayName }
-                        onChange={ onInputChange } 
+                        onChange={ onInputChange }
+                        error= { !diplayNameValid }
+                        helperText={ diplayNameValid } 
                         />
                     </Grid>
                     <Grid item xs={12} sx={{ mt: 2 }}>
